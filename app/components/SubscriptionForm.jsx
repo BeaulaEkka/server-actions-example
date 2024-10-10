@@ -12,6 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import SendEmail from "../actions/SendEmail";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   fullName: z
@@ -31,13 +33,24 @@ export default function SubscriptionForm() {
     },
   });
 
-  function onSubmit(values) {
-    console.log("value", values);
+  async function onSubmit(values) {
+    try {
+      await SendEmail(values);
+      toast.success(`${values.fullName} subscribed successfully!`);
+    } catch (e) {
+      console.error("onsubmit:function", e);
+      toast.error(e.message);
+    }
   }
+
+  const { isSubmitting, isValid } = form.formState;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 p-14 rounded-md shadow-md w-[400px]">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 p-14 rounded-md shadow-md w-[400px]"
+      >
         {/**full Name */}
         <FormField
           control={form.control}
@@ -46,7 +59,11 @@ export default function SubscriptionForm() {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input
+                  placeholder="John Doe"
+                  {...field}
+                  disabled={isSubmitting}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -60,13 +77,20 @@ export default function SubscriptionForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john.doe@example.com" {...field} />
+                <Input
+                  placeholder="john.doe@example.com"
+                  {...field}
+                  disabled={isSubmitting}
+                />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
         <div>
-          <Button className="mt-8">Submit</Button>
+          <Button className="mt-4" disabled={!isValid || isSubmitting}>
+            Submit
+          </Button>
         </div>
       </form>
     </Form>
