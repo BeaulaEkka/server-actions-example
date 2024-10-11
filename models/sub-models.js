@@ -12,7 +12,7 @@ const SubscribersSchema = new Schema({
   createdAt: {
     required: true,
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   unsubscribed: {
     required: true,
@@ -22,4 +22,4 @@ const SubscribersSchema = new Schema({
 });
 
 export const Subscriber =
-  mongoose.models.subscriber ?? mongoose.model("Subscriber", SubscribersSchema);
+  mongoose.models.Subscriber || mongoose.model("Subscriber", SubscribersSchema);
