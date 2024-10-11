@@ -24,6 +24,7 @@ const formSchema = z.object({
     message: "Invalid email",
   }),
 });
+
 export default function SubscriptionForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -34,6 +35,7 @@ export default function SubscriptionForm() {
   });
 
   async function onSubmit(values) {
+    console.log("onsubmitValues", values);
     try {
       await SendEmail(values);
       toast.success(`${values.fullName} subscribed successfully!`);
@@ -51,7 +53,7 @@ export default function SubscriptionForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4 p-14 rounded-md shadow-md w-[400px]"
       >
-        {/**full Name */}
+        {/** Full Name */}
         <FormField
           control={form.control}
           name="fullName"
@@ -69,10 +71,10 @@ export default function SubscriptionForm() {
             </FormItem>
           )}
         />
-        {/**Email */}
+        {/** Email */}
         <FormField
+          control={form.control}
           name="email"
-          contorl={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
