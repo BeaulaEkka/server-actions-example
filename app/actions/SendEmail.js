@@ -1,49 +1,56 @@
-"use server";
-
-import { Subscriber } from "@/models/sub-models";
+// "use server";
 
 // import { Subscriber } from "@/models/sub-models";
 
 // export default async function SendEmail({ fullName, email }) {
-//   console.log("Received data in SendEmail:", { fullName, email });
 //   try {
-//     const email = formData["email"];
-//     const fullName = formData["fullName"];
-//     console.log("formdata:destructred:", email, fullName);
+//     if (!email) return { success: false, message: "Email is required" };
 
-//     if (!email) return null;
+//     const existingSubscriber = await Subscriber.findOne({
+//       $or: [{ email: email }, { fullName: fullName }],
+//     }).lean();
 
-//     const foundSubscriber = await Subscriber.findOne({ email: email }).lean();
-
-//     console.log("foundSubscriber", foundSubscriber);
-
-//     if (!foundSubscriber) {
+//     if (!existingSubscriber) {
 //       const subscriberPayload = {
-//         name: fullName,
-//         email: email,
+//         fullName,
+//         email,
 //       };
 //       await Subscriber.create(subscriberPayload);
+//     } else {
+//       return { success: false, message: "Subscriber already exists" };
 //     }
 //   } catch (e) {
 //     throw new Error(e);
 //   }
 // }
 
+"use server";
+
+import { Subscriber } from "@/models/sub-models";
+
 export default async function SendEmail({ fullName, email }) {
-  console.log("Received data in SendEmail:", { fullName, email });
-
-  // Basic validation before proceeding
-  if (!fullName || !email) {
-    throw new Error("Full name and email are required.");
-  }
-
-  const newSubscriber = new Subscriber({ fullName, email });
-
   try {
-    await newSubscriber.save();
-    return { success: true };
+    if (!email) return { success: false, message: "Email is required" };
+
+    const existingSubscriber = await Subscriber.findOne({
+      $or: [{ email: email }, { fullName: fullName }],
+    }).lean();
+
+    if (existingSubscriber) {
+      // If the subscriber already exists, return a failure message
+      return { success: false, message: "Subscriber already exists" };
+    }
+
+    // If not, create a new subscriber
+    const subscriberPayload = {
+      fullName,
+      email,
+    };
+    await Subscriber.create(subscriberPayload);
+
+    // Return a success response
+    return { success: true, message: "Subscription successful!" };
   } catch (error) {
-    console.error("Error saving the subscriber:", error);
-    throw new Error("Error saving the subscriber.");
+    throw new Error("Error subscribing the user");
   }
 }
