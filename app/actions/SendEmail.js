@@ -51,6 +51,11 @@ export default async function SendEmail({ fullName, email }) {
     // Return a success response
     return { success: true, message: "Subscription successful!" };
   } catch (error) {
-    throw new Error("Error subscribing the user");
+    return {
+      success: false,
+      message: `Error subscribing the user: ${
+        error.message || "Unknown error"
+      }`,
+    };
   }
 }
