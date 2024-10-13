@@ -1,33 +1,10 @@
-// "use server";
-
-// import { Subscriber } from "@/models/sub-models";
-
-// export default async function SendEmail({ fullName, email }) {
-//   try {
-//     if (!email) return { success: false, message: "Email is required" };
-
-//     const existingSubscriber = await Subscriber.findOne({
-//       $or: [{ email: email }, { fullName: fullName }],
-//     }).lean();
-
-//     if (!existingSubscriber) {
-//       const subscriberPayload = {
-//         fullName,
-//         email,
-//       };
-//       await Subscriber.create(subscriberPayload);
-//     } else {
-//       return { success: false, message: "Subscriber already exists" };
-//     }
-//   } catch (e) {
-//     throw new Error(e);
-//   }
-// }
-
 "use server";
 
 import { Subscriber } from "@/models/sub-models";
+import { Resend } from "resend";
+import EmailTemplate from "../components/EmailTemplate";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 export default async function SendEmail({ fullName, email }) {
   try {
     if (!email) return { success: false, message: "Email is required" };
@@ -36,26 +13,28 @@ export default async function SendEmail({ fullName, email }) {
       $or: [{ email: email }, { fullName: fullName }],
     }).lean();
 
-    if (existingSubscriber) {
-      // If the subscriber already exists, return a failure message
+    if (!existingSubscriber) {
+      const subscriberPayload = {
+        fullName,
+        email,
+      };
+      await Subscriber.create(subscriberPayload);
+      const message = `Dear ${fullName} thank you for your subscription. The doors of wisdom is opened to you! Enjoy`;
+
+      await resend.emails.send({
+        from: "info@doorsofwisdom.com",
+        to: email,
+        subject: "Welcome to Door of Wisdom",
+        react: EmailTemplate({ message }),
+      });
+      return { success: true, message: "Subscriber created successfully" };
+    } else {
       return { success: false, message: "Subscriber already exists" };
     }
-
-    // If not, create a new subscriber
-    const subscriberPayload = {
-      fullName,
-      email,
-    };
-    await Subscriber.create(subscriberPayload);
-
-    // Return a success response
-    return { success: true, message: "Subscription successful!" };
-  } catch (error) {
+  } catch (e) {
     return {
       success: false,
-      message: `Error subscribing the user: ${
-        error.message || "Unknown error"
-      }`,
+      message: `Error subscribing the user: ${e.message || "Unknown error"}`,
     };
   }
 }
