@@ -22,7 +22,7 @@ export default async function SendEmail({ fullName, email }) {
       const message = `Dear ${fullName} thank you for your subscription. The doors of wisdom is opened to you! Enjoy`;
 
       await resend.emails.send({
-        from: "info@doorsofwisdom.com",
+        from: "onboarding@resend.dev",
         to: email,
         subject: "Welcome to Door of Wisdom",
         react: EmailTemplate({ message }),
