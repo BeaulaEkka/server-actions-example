@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { createInvoice } from "./_components/form";
 import CourseComments from "../components/CourseComments";
+import CoursePosts from "../components/CoursePosts";
 
 export default function Testpage() {
   const [rawFormData, setRawFormData] = useState([]); // Hold form data
@@ -41,7 +42,8 @@ export default function Testpage() {
           <p>No data available yet</p>
         )}
       </div> */}
-      <CourseComments postId="001" />
+      {/* <CourseComments postId="001" /> */}
+      <CoursePosts postId="777" />
     </>
   );
 }
