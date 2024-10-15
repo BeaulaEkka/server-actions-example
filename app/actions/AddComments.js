@@ -1,9 +1,8 @@
-import React from "react";
-
+"use server";
 export default async function AddComments(comment, postId) {
   console.log("adding comment");
   console.log(comment, postId);
   //make a db call
   //store the commnet
-  return <div></div>;
+  return true;
 }

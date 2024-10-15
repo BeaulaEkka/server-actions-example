@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { createInvoice } from "./_components/form";
-
+import CourseComments from "../components/CourseComments";
 
 export default function Testpage() {
   const [rawFormData, setRawFormData] = useState([]); // Hold form data
@@ -15,7 +15,7 @@ export default function Testpage() {
 
   return (
     <>
-      <form action={handleSubmit} className="m-4">
+      {/* <form action={handleSubmit} className="m-4">
         <input type="hidden" name="customerId" value="001" />
         <input
           type="number"
@@ -26,10 +26,10 @@ export default function Testpage() {
         />
 
         <Button type="submit">Create Invoice</Button>
-      </form>
+      </form> */}
 
       {/* Display the form data */}
-      <div className="mt-4">
+      {/* <div className="mt-4">
         {rawFormData.length > 0 ? (
           rawFormData.map((data, index) => (
             <div key={index} className="p-2 my-2 border">
@@ -40,7 +40,8 @@ export default function Testpage() {
         ) : (
           <p>No data available yet</p>
         )}
-      </div>
+      </div> */}
+      <CourseComments postId="001" />
     </>
   );
 }
