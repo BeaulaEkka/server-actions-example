@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { createInvoice } from "./_components/form";
 import CourseComments from "../components/CourseComments";
 import CoursePosts from "../components/CoursePosts";
+import ViewCount from "../components/ViewCount";
 
 export default function Testpage() {
   const [rawFormData, setRawFormData] = useState([]); // Hold form data
@@ -43,7 +44,8 @@ export default function Testpage() {
         )}
       </div> */}
       {/* <CourseComments postId="001" /> */}
-      <CoursePosts postId="777" />
+      {/* <CoursePosts postId="777" /> */}
+      <ViewCount />
     </>
   );
 }
