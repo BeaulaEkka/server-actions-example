@@ -10,7 +10,7 @@ import { getSubscribers } from "@/queries";
 
 export default async function Subscribers() {
   const subscribers = await getSubscribers();
-  console.log(subscribers);
+
   return (
     <div>
       {subscribers.map((sub) => (

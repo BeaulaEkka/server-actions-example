@@ -3,6 +3,7 @@
 import { Subscriber } from "@/models/sub-models";
 import { Resend } from "resend";
 import EmailTemplate from "../components/EmailTemplate";
+import { revalidatePath } from "next/cache";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 export default async function SendEmail({ fullName, email }) {
@@ -27,6 +28,7 @@ export default async function SendEmail({ fullName, email }) {
         subject: "Welcome to Door of Wisdom",
         react: EmailTemplate({ message }),
       });
+      revalidatePath("/");
       return { success: true, message: "Subscriber created successfully" };
     } else {
       return { success: false, message: "Subscriber already exists" };
