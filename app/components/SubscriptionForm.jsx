@@ -136,7 +136,7 @@ export default function SubscriptionForm() {
   });
 
   async function onSubmit(values) {
-    console.log("onsubmitValues", values);
+    
     try {
       const response = await SendEmail(values);
 
