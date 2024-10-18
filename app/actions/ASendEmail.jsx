@@ -1,8 +1,7 @@
 import { Subscriber } from "@/models/sub-models";
+import { revalidatePath } from "next/cache";
 import React from "react";
-import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 export default async function ASendEmail({ name, email }) {
   try {
     if (!email) return { success: false, message: "Email is required" };
@@ -12,10 +11,12 @@ export default async function ASendEmail({ name, email }) {
     }).lean();
 
     if (!existingSubscriber) {
-      const subscriber = new Subscriber({
-        name: name,
-        email: email,
-      });
+      const subscriberPayload = {
+        name,
+        email,
+      };
+      await Subscriber.create(subscriberPayload);
+      revalidatePath("/");
     }
   } catch (e) {}
   return <div></div>;
