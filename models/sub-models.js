@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const SubscribersSchema = new Schema({
-  fullName: {
+  name: {
     required: true,
     type: String,
     trim: true,
@@ -9,9 +9,9 @@ const SubscribersSchema = new Schema({
   email: {
     required: true,
     type: String,
-    unique:true,
-    lowercase:true,
-    trim:true
+    unique: true,
+    lowercase: true,
+    trim: true,
   },
   createdAt: {
     required: true,

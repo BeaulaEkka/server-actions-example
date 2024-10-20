@@ -16,16 +16,17 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import ASendEmail from "../actions/ASendEmail";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  name: z.string().min(3, "Please enter your name"),
+  fullName: z.string().min(3, "Please enter your name"),
   email: z.string().email({ message: "invalid email" }),
 });
 export default function ASubscriptionForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      fullName: "",
       email: "",
     },
   });
@@ -44,15 +45,16 @@ export default function ASubscriptionForm() {
       toast.error("An error occured.Please try again.");
     }
   }
+  const { isSubmitting, isValid } = form.formState;
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="name"
+          name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Full Name</FormLabel>
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
