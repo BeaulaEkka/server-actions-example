@@ -1,7 +1,7 @@
 "use server";
 import { Subscriber } from "@/models/sub-models";
 import { revalidatePath } from "next/cache";
-import React from "react";
+
 
 export default async function ASendEmail({ fullName, email }) {
   try {

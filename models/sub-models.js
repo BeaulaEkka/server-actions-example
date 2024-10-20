@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const SubscribersSchema = new Schema({
-  name: {
+  fullName: {
     required: true,
     type: String,
     trim: true,

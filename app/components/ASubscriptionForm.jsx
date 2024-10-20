@@ -56,7 +56,11 @@ export default function ASubscriptionForm() {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input
+                  placeholder="John Doe"
+                  {...field}
+                  disabled={isSubmitting}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,13 +74,17 @@ export default function ASubscriptionForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="John@example.com" {...field} />
+                <Input
+                  placeholder="John@example.com"
+                  {...field}
+                  disabled={isSubmitting}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button disabled={!isValid || isSubmitting}>Submit</Button>
       </form>
     </Form>
   );
